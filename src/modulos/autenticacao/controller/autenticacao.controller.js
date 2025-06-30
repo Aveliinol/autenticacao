@@ -42,6 +42,7 @@ class AutenticacaoController {
       }
       const dadosAluno = {
         nome: usuario.nome,
+        matricula: usuario.matricula,
         papel: "aluno",
       };
       // gerando os tokens
@@ -58,6 +59,7 @@ class AutenticacaoController {
         msg: "Usuario logado com sucesso",
         tokenAcesso,
         nome: usuario.nome,
+        matricula: usuario.matricula,
         papel: "aluno",
       });
     } catch (error) {
@@ -103,10 +105,10 @@ class AutenticacaoController {
     } catch (error) {
       res.status(500).json({
         msg: "Erro interno do servidor. Por favor, tente mais tarde.",
-        erro: error.message,
+        erro: error.message
       });
     }
-  }   
+  }
 }
 
 module.exports = AutenticacaoController;
