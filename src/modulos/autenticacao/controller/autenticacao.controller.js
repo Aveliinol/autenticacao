@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const dotenv = require("dotenv");
 dotenv.config();
-const Aluno = require("../../aluno/models/aluno.model");
+const Aluno = require("../../usuario/models/usuario.model");
 
 // Definindo variaveis de ambiente para TEMPO_ACESS_TOKEN e TEMPO_REFRESH_TOKEN
 const tempo_acess_token = process.env.TEMPO_ACESS_TOKEN;
@@ -43,7 +43,7 @@ class AutenticacaoController {
       const dadosAluno = {
         nome: usuario.nome,
         matricula: usuario.matricula,
-        papel: "aluno",
+        papel: usuario.papel,
       };
       // gerando os tokens
       const tokenAcesso = AutenticacaoController.gerarTokenAcesso(dadosAluno);
@@ -53,14 +53,14 @@ class AutenticacaoController {
         httpOnly: false,
         secure: process.env.NODE_ENV,
         sameStrict: "strict",
-        maxAge: 1 * 24, // 1 dia
+        maxAge: 1 * 24 * 60 * 60 * 1000, // 1 dia
       });
       res.status(200).json({
         msg: "Usuario logado com sucesso",
         tokenAcesso,
         nome: usuario.nome,
         matricula: usuario.matricula,
-        papel: "aluno",
+        papel: usuario.papel,
       });
     } catch (error) {
       res.status(500).json({
@@ -85,7 +85,7 @@ class AutenticacaoController {
         }
         const dadosAluno = {
           nome: usuario.nome,
-          papel: "aluno",
+          papel: usuario.papel,
         };
         // gerando o novo token
         const novoTokenAcesso = this.gerarTokenAcesso(dadosAluno);
